@@ -1,0 +1,427 @@
+/* Danny Slider - Core Styles */
+.danny-slider {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.danny-main-wrapper {
+    overflow: hidden;
+}
+
+.danny-slider-track {
+    display: flex;
+    transition: transform 0.5s var(--danny-ease, ease);
+    touch-action: pan-y;
+    gap: var(--danny-gap, 0px);
+}
+
+.danny-slider-item {
+    flex: 0 0 var(--danny-item-width, 100%);
+    min-width: 0;
+}
+
+.danny-slider-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: pointer;
+    user-select: none;
+    max-height: 100vh;
+    object-fit: contain;
+    object-position: center;
+}
+
+/* Navigation Arrows */
+.danny-slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 12px 16px;
+    cursor: pointer;
+    z-index: 2;
+    font-size: 18px;
+    transition: background 0.3s;
+    border-radius: 4px;
+}
+
+.danny-slider-btn:hover,
+.danny-slider-btn:focus {
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    border: none;
+}
+
+.danny-slider-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.danny-slider-prev {
+    left: 10px;
+}
+
+.danny-slider-next {
+    right: 10px;
+}
+
+/* Dots Navigation */
+.danny-slider-dots {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.danny-slider-dot {
+    width: 10px;
+    height: 10px;
+    background: #ccc;
+    display: inline-block;
+    border-radius: 50%;
+    margin: 0 3px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    border: none;
+    padding: 0;
+}
+
+.danny-slider-dot:hover {
+    transform: scale(1.2);
+}
+
+.danny-slider-dot.active {
+    background: #333;
+}
+
+/* Thumbnails */
+/* Thumbnails Slider */
+.danny-slider-thumbs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    position: relative;
+}
+
+
+
+/* Vertical Orientation Support */
+.danny-slider[data-thumbs-orientation="vertical"] {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    /* Thumbs | Main */
+    align-items: start;
+    /* Explicitly named areas or columns */
+    grid-template-areas: "thumbs main";
+}
+
+.danny-slider[data-thumbs-orientation="vertical"] .danny-slider-thumbs {
+    grid-area: thumbs;
+    /* Forces it to the 'thumbs' column (1st) */
+    margin-top: 0;
+    flex-direction: column;
+    height: 100%;
+    max-height: 500px;
+    overflow: hidden;
+}
+
+.danny-slider[data-thumbs-orientation="vertical"] .danny-slider-track {
+    grid-area: main;
+    /* Forces it to the 'main' column (2nd) */
+    width: 100%;
+    min-width: 0;
+    /* Prevents grid blowout */
+    /* Ensure overflow hidden is handled by container or wrapper */
+}
+
+.danny-slider[data-thumbs-orientation="vertical"] .danny-thumbs-viewport {
+    width: 100%;
+    height: 100%;
+}
+
+.danny-slider[data-thumbs-orientation="vertical"] .danny-thumbs-track {
+    flex-direction: column;
+    height: 100%;
+    /* Fix: Must be 100% relative to viewport for scroll calc to work */
+    width: 100%;
+}
+
+.danny-slider[data-thumbs-orientation="vertical"] .danny-thumbs-btn {
+    width: 100%;
+    padding: 10px;
+}
+
+.danny-slider[data-thumbs-orientation="vertical"] .danny-thumbs-btn.danny-thumbs-prev {
+    transform: rotate(90deg);
+    /* Visual arrow rotation */
+}
+
+.danny-slider[data-thumbs-orientation="vertical"] .danny-thumbs-btn.danny-thumbs-next {
+    transform: rotate(90deg);
+}
+
+/* Responsive fallback for Mobile */
+@media (max-width: 768px) {
+    .danny-slider[data-thumbs-orientation="vertical"] {
+        display: block;
+        /* Stack them */
+    }
+
+    .danny-slider[data-thumbs-orientation="vertical"] .danny-slider-thumbs {
+        flex-direction: row;
+        height: auto;
+        max-height: none;
+        margin-top: 15px;
+    }
+
+    .danny-slider[data-thumbs-orientation="vertical"] .danny-thumbs-track {
+        flex-direction: row;
+        width: auto;
+    }
+
+    .danny-slider[data-thumbs-orientation="vertical"] .danny-thumbs-btn {
+        width: auto;
+        transform: none;
+    }
+}
+
+.danny-thumbs-viewport {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.danny-thumbs-track {
+    display: flex;
+    transition: transform 0.3s ease;
+    gap: var(--danny-thumbs-gap, 10px);
+}
+
+.danny-thumb-item {
+    flex: 0 0 var(--danny-thumb-width, 25%);
+    min-width: 0;
+    cursor: pointer;
+    box-sizing: border-box;
+    /* Center the thumbnail in the slot */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.danny-thumb-item img {
+    width: 100%;
+    /* Fill calculated slot */
+    height: 100%;
+    /* Fill calculated slot */
+    object-fit: cover;
+    display: block;
+    opacity: 0.6;
+    border: 3px solid transparent;
+    /* Thick generic border placeholder */
+    transition: opacity 0.3s, border-color 0.3s, transform 0.3s;
+    border-radius: 4px;
+    box-sizing: border-box;
+    /* Include border in size */
+    max-width: 100px;
+}
+
+.danny-thumb-item:hover img {
+    /* transform: scale(1.05); */
+    /* Removing scale as it might overflow fixed slot */
+    opacity: 0.8;
+}
+
+.danny-thumb-item.active img {
+    opacity: 1;
+    border-color: #333;
+    /* Explicit active color */
+}
+
+/* Thumb buttons */
+.danny-thumbs-btn {
+    background: transparent;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 15px 10px;
+    /* Taller hit area */
+    font-size: 16px;
+    color: #333;
+    transition: background 0.3s, color 0.3s;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.danny-thumbs-btn:hover {
+    background: #f0f0f0;
+}
+
+.danny-thumbs-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background: transparent;
+}
+
+/* Fade Transition Mode */
+.danny-slider[data-transition="fade"] .danny-slider-track {
+    position: relative;
+    transition: none;
+    gap: 0;
+}
+
+.danny-slider[data-transition="fade"] .danny-slider-item {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s var(--danny-ease, ease);
+    pointer-events: none;
+    width: 100%;
+}
+
+.danny-slider[data-transition="fade"] .danny-slider-item.active {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+}
+
+/* Gallery Overlay */
+.danny-zoom-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.danny-zoom-overlay.active {
+    display: flex;
+}
+
+.danny-zoom-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease;
+    will-change: transform;
+}
+
+.danny-zoom-track img {
+    flex: 0 0 100%;
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    user-select: none;
+}
+
+.danny-zoom-prev,
+.danny-zoom-next,
+.danny-zoom-close {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    font-size: 24px;
+    padding: 12px 16px;
+    cursor: pointer;
+    z-index: 10000;
+    transition: background 0.3s, transform 0.3s;
+    border-radius: 4px;
+    color: #000;
+}
+
+.danny-zoom-prev:hover,
+.danny-zoom-next:hover,
+.danny-zoom-close:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+}
+
+.danny-zoom-prev {
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.danny-zoom-next {
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.danny-zoom-close {
+    top: 20px;
+    right: 20px;
+}
+
+.danny-zoom-prev:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.danny-zoom-next:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .danny-slider-btn {
+        padding: 8px 12px;
+        font-size: 16px;
+    }
+
+    .danny-slider-thumbs img {
+        width: 60px;
+        height: 45px;
+    }
+
+    .danny-zoom-prev,
+    .danny-zoom-next,
+    .danny-zoom-close {
+        font-size: 20px;
+        padding: 8px 12px;
+    }
+
+    .danny-zoom-prev {
+        left: 10px;
+    }
+
+    .danny-zoom-next {
+        right: 10px;
+    }
+
+    .danny-zoom-close {
+        top: 10px;
+        right: 10px;
+    }
+}
+
+/* Optional: Hide elements if disabled via data attributes */
+.danny-slider[data-arrows="false"] .danny-slider-btn {
+    display: none;
+}
+
+.danny-slider[data-dots="false"] .danny-slider-dots {
+    display: none;
+}
+
+.danny-slider[data-thumbnails="false"] .danny-slider-thumbs {
+    display: none;
+}
+
+/*Temp css you can remove this*/
+.danny-slider-content {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 70px;
+    background: #ffac00;
+}
